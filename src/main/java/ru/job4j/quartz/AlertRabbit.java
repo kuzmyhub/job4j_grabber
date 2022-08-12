@@ -14,7 +14,8 @@ import static org.quartz.SimpleScheduleBuilder.*;
 
 public class AlertRabbit {
     public static void main(String[] args) {
-        try (Connection connect = connect()) {
+        Properties config = getConfig();
+        try (Connection connect = connect(config)) {
             Scheduler scheduler = StdSchedulerFactory.getDefaultScheduler();
             scheduler.start();
             JobDataMap data = new JobDataMap();
@@ -24,7 +25,7 @@ public class AlertRabbit {
                     .build();
             SimpleScheduleBuilder times = simpleSchedule()
                     .withIntervalInSeconds(
-                            Integer.parseInt(getConfig()
+                            Integer.parseInt(config
                                     .getProperty("rabbit.interval"))
                     )
                     .repeatForever();
@@ -34,7 +35,7 @@ public class AlertRabbit {
                     .build();
             scheduler.scheduleJob(job, trigger);
             Thread.sleep(Long
-                    .parseLong(getConfig()
+                    .parseLong(config
                             .getProperty("rabbit.sleep")));
             scheduler.shutdown();
             System.out.println(connect);
@@ -43,12 +44,11 @@ public class AlertRabbit {
         }
     }
 
-    public static Connection connect() throws ClassNotFoundException, SQLException {
-        Properties properties = getConfig();
-        Class.forName(properties.getProperty("driver_class"));
-        return DriverManager.getConnection(properties.getProperty("url"),
-                properties.getProperty("username"),
-                properties.getProperty("password"));
+    public static Connection connect(Properties config) throws ClassNotFoundException, SQLException {
+        Class.forName(config.getProperty("driver_class"));
+        return DriverManager.getConnection(config.getProperty("url"),
+                config.getProperty("username"),
+                config.getProperty("password"));
     }
 
     public static Properties getConfig() {
