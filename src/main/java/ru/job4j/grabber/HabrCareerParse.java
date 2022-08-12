@@ -30,9 +30,7 @@ public class HabrCareerParse implements Parse {
         List<Post> posts = new ArrayList<>();
         HabrCareerParse habrCareerParse
                 = new HabrCareerParse(new HabrCareerDateTimeParser());
-        for (int i = 1; i <= LAST_PAGE_NUMBER; i++) {
-            posts.addAll(habrCareerParse.list(PAGE_LINK + "?page=" + i));
-        }
+        posts.addAll(habrCareerParse.list(PAGE_LINK + "?page="));
         for (Post p : posts) {
             System.out.println(p + System.lineSeparator());
         }
@@ -41,41 +39,55 @@ public class HabrCareerParse implements Parse {
     @Override
     public List<Post> list(String link) {
         List<Post> posts = new ArrayList<>();
-        try {
-            Connection connection = Jsoup.connect(link);
-            Document document = connection.get();
-            Elements rows = document.select(".vacancy-card__inner");
-            rows.forEach(row -> {
-                Element titleElement = row.select(".vacancy-card__title").first();
-                Element linkElement = titleElement.child(0);
-                String vacancyName = titleElement.text();
-                Element dateElement = row.select(".vacancy-card__date").first();
-                Element vacancyDate = dateElement.child(0);
-                String vacancyLink = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-                HabrCareerParse habrCareerParse
-                        = new HabrCareerParse(new HabrCareerDateTimeParser());
-                try {
-                    String vacancyDescription = habrCareerParse.retrieveDescription(vacancyLink);
-                    Post post = new Post(vacancyName, vacancyLink,
-                            vacancyDescription,
-                            dateTimeParser.parse(
-                                    vacancyDate.attr("datetime")
-                            ));
-                    posts.add(post);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-        } catch (IOException e) {
-            e.printStackTrace();
+        for (int i = 1; i <= LAST_PAGE_NUMBER; i++) {
+            try {
+                Connection connection = Jsoup.connect(link + i);
+                Document document = connection.get();
+                Elements rows = document.select(".vacancy-card__inner");
+                rows.forEach(row -> {
+                    HabrCareerParse habrCareerParse
+                            = new HabrCareerParse(new HabrCareerDateTimeParser());
+                    posts.add(habrCareerParse.parsePost(row.select(".vacancy-card__title").first(),
+                                row.select(".vacancy-card__date").first()));
+                });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         return posts;
     }
 
-    private String retrieveDescription(String link) throws IOException {
-        Connection connection = Jsoup.connect(link);
-        Document document = connection.get();
-        Elements row = document.select(".style-ugc");
-        return row.text();
+    private Post parsePost(Element titleElement, Element dateElement) {
+        Post post = null;
+        HabrCareerParse habrCareerParse
+                = new HabrCareerParse(new HabrCareerDateTimeParser());
+        Element linkElement = titleElement.child(0);
+        String vacancyName = titleElement.text();
+        Element vacancyDate = dateElement.child(0);
+        String vacancyLink = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
+        try {
+            String vacancyDescription = habrCareerParse.retrieveDescription(vacancyLink);
+            post = new Post(vacancyName, vacancyLink,
+                    vacancyDescription,
+                    habrCareerParse.dateTimeParser.parse(
+                            vacancyDate.attr("datetime")
+                    ));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return post;
+    }
+
+    private String retrieveDescription(String link) {
+        String description = null;
+        try {
+            Connection connection = Jsoup.connect(link);
+            Document document = connection.get();
+            Elements row = document.select(".style-ugc");
+            description = row.text();
+        } catch (IllegalAccessError | IOException e) {
+            e.printStackTrace();
+        }
+        return description;
     }
 }
