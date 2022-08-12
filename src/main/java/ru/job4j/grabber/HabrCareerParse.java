@@ -26,14 +26,14 @@ public class HabrCareerParse {
                 Element linkElement = titleElement.child(0);
                 String vacancyName = titleElement.text();
                 Element dateElement = row.select(".vacancy-card__date").first();
-                String vacancyDate = dateElement.text();
+                Element vacancyDate = dateElement.child(0);
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
                 HabrCareerParse habrCareerParse = new HabrCareerParse();
                 try {
                     String vacancyDescription = habrCareerParse.retrieveDescription(link);
                     System.out.printf(
                             "%s %s %s%n%s%n",
-                            vacancyName, link, vacancyDate, vacancyDescription
+                            vacancyName, link, vacancyDate.attr("datetime"), vacancyDescription
                     );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
