@@ -30,8 +30,11 @@ public class HabrCareerParse {
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
                 HabrCareerParse habrCareerParse = new HabrCareerParse();
                 try {
-                    String s = habrCareerParse.retrieveDescription(link);
-                    System.out.printf("%s %s %s%n%s%n", vacancyName, link, vacancyDate, s);
+                    String vacancyDescription = habrCareerParse.retrieveDescription(link);
+                    System.out.printf(
+                            "%s %s %s%n%s%n",
+                            vacancyName, link, vacancyDate, vacancyDescription
+                    );
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
