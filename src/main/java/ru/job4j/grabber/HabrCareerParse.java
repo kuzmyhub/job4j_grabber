@@ -28,8 +28,21 @@ public class HabrCareerParse {
                 Element dateElement = row.select(".vacancy-card__date").first();
                 String vacancyDate = dateElement.text();
                 String link = String.format("%s%s", SOURCE_LINK, linkElement.attr("href"));
-                System.out.printf("%s %s %s%n", vacancyName, link, vacancyDate);
+                HabrCareerParse habrCareerParse = new HabrCareerParse();
+                try {
+                    String s = habrCareerParse.retrieveDescription(link);
+                    System.out.printf("%s %s %s%n%s%n", vacancyName, link, vacancyDate, s);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
             });
         }
+    }
+
+    private String retrieveDescription(String link) throws IOException {
+        Connection connection = Jsoup.connect(link);
+        Document document = connection.get();
+        Elements row = document.select(".style-ugc");
+        return row.text();
     }
 }
