@@ -10,7 +10,7 @@ import java.io.IOException;
 
 public class HabrCareerParse {
 
-    private static final int pageNumber = 1;
+    private static int pageNumber = 1;
 
     private static final String SOURCE_LINK = "https://career.habr.com";
 
