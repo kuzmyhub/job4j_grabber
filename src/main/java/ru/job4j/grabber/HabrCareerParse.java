@@ -31,9 +31,6 @@ public class HabrCareerParse implements Parse {
         HabrCareerParse habrCareerParse
                 = new HabrCareerParse(new HabrCareerDateTimeParser());
         posts.addAll(habrCareerParse.list(PAGE_LINK + "?page="));
-        for (Post p : posts) {
-            System.out.println(p + System.lineSeparator());
-        }
     }
 
     @Override
