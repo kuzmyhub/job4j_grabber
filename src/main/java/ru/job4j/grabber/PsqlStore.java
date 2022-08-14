@@ -23,26 +23,17 @@ public class PsqlStore implements Store, AutoCloseable {
                 cfg.getProperty("username"),
                 cfg.getProperty("password")
                 );
+        createTable();
     }
 
     @Override
     public void save(Post post) {
         try (PreparedStatement statement
                      = cnn.prepareStatement(
-                             "create table if not exists "
-                                     + "post(id serial primary key,"
-                                     + " name text, text text, link text,"
-                                     + " created date)"
-        )) {
-            statement.execute();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        try (PreparedStatement statement
-                     = cnn.prepareStatement(
                              "insert into"
                                      + " post(name, text, link, created)"
-                                     + " values (?, ?, ?, ?)",
+                                     + " values (?, ?, ?, ?)"
+                                     + " on conflict (link) do nothing;",
                 Statement.RETURN_GENERATED_KEYS
         )) {
             statement.setString(1, post.getTitle());
@@ -63,19 +54,16 @@ public class PsqlStore implements Store, AutoCloseable {
     @Override
     public List<Post> getAll() {
         List<Post> list = new ArrayList<>();
-        try (PreparedStatement statement = cnn.prepareStatement("select * from post")) {
-            ResultSet resultSet = statement.getResultSet();
-            while (resultSet.next()) {
-                list.add(new Post(
-                   resultSet.getInt(1),
-                   resultSet.getString(2),
-                   resultSet.getString(3),
-                   resultSet.getString(4),
-                   resultSet.getTimestamp(5).toLocalDateTime()
-                ));
+        try (PreparedStatement statement
+                     = cnn.prepareStatement(
+                             "select * from post;")) {
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    list.add(getResult(resultSet));
+                }
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
         return list;
     }
@@ -84,15 +72,12 @@ public class PsqlStore implements Store, AutoCloseable {
     public Post findById(int id) {
         Post post = null;
         try (PreparedStatement statement
-                     = cnn.prepareStatement("select id from post where id = ?")) {
-            ResultSet resultSet = statement.getResultSet();
-            while (resultSet.next()) {
-                post = new Post(
-                        resultSet.getString(1),
-                        resultSet.getString(2),
-                        resultSet.getString(3),
-                        resultSet.getTimestamp(4).toLocalDateTime()
-                        );
+                     = cnn.prepareStatement("select * from post where id = ?;")) {
+            statement.setInt(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    post = getResult(resultSet);
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -105,6 +90,30 @@ public class PsqlStore implements Store, AutoCloseable {
         if (cnn != null) {
             cnn.close();
         }
+    }
+
+    public void createTable() {
+        try (PreparedStatement statement
+                     = cnn.prepareStatement(
+                "create table if not exists "
+                        + "post(id serial primary key,"
+                        + " name text, text text, link text unique,"
+                        + " created date);"
+        )) {
+            statement.execute();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public Post getResult(ResultSet resultSet) throws SQLException {
+        return new Post(
+                resultSet.getInt(1),
+                resultSet.getString(2),
+                resultSet.getString(3),
+                resultSet.getString(4),
+                resultSet.getTimestamp(5).toLocalDateTime()
+        );
     }
 
     public static void main(String[] args) {
