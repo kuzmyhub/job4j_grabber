@@ -4,6 +4,8 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 import ru.job4j.grabber.utils.HabrCareerDateTimeParser;
 
+import java.sql.SQLException;
+import java.util.List;
 import java.util.Properties;
 
 import java.io.*;
@@ -14,10 +16,15 @@ import static org.quartz.SimpleScheduleBuilder.simpleSchedule;
 import static org.quartz.TriggerBuilder.newTrigger;
 
 public class Grabber implements Grab {
+
     private final Properties cfg = new Properties();
 
-    public Store store() {
-        return null;
+    private static final String SOURCE_LINK = "https://career.habr.com";
+
+    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
+
+    public Store store() throws SQLException {
+        return new PsqlStore(cfg);
     }
 
     public Scheduler scheduler() throws SchedulerException {
@@ -59,7 +66,10 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            /* TODO impl logic */
+            List<Post> posts = parse.list(PAGE_LINK + "?page=");
+            for (Post p : posts) {
+                store.save(p);
+            }
         }
     }
 
