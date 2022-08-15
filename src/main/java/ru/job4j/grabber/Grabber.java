@@ -24,7 +24,7 @@ public class Grabber implements Grab {
 
     private static final String SOURCE_LINK = "https://career.habr.com";
 
-    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer", SOURCE_LINK);
+    private static final String PAGE_LINK = String.format("%s/vacancies/java_developer?page=", SOURCE_LINK);
 
     public Store store() throws SQLException {
         return new PsqlStore(cfg);
@@ -89,7 +89,7 @@ public class Grabber implements Grab {
             JobDataMap map = context.getJobDetail().getJobDataMap();
             Store store = (Store) map.get("store");
             Parse parse = (Parse) map.get("parse");
-            List<Post> posts = parse.list(PAGE_LINK + "?page=");
+            List<Post> posts = parse.list(PAGE_LINK);
             for (Post p : posts) {
                 store.save(p);
             }
