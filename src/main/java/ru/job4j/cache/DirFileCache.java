@@ -1,8 +1,13 @@
 package ru.job4j.cache;
 
+import jdk.jshell.EvalException;
+import org.jsoup.select.Evaluator;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class DirFileCache extends AbstractCache<String, String> {
 
@@ -14,22 +19,12 @@ public class DirFileCache extends AbstractCache<String, String> {
 
     @Override
     protected String load(String key) {
-        String value = get(key);
-        if (value == null) {
-            StringBuilder sb = new StringBuilder();
-            try {
-                BufferedReader in = new BufferedReader(
-                        new FileReader(cachingDir + key)
-                );
-                String s;
-                while ((s = in.readLine()) != null) {
-                    sb.append(s);
-                    sb.append(System.lineSeparator());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            value = sb.toString();
+        String value = null;
+        try {
+            String text = Files.readString(Path.of(cachingDir, key));
+            value = text;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return value;
     }
