@@ -8,13 +8,21 @@ import java.util.Scanner;
 
 public class Emulator {
 
-    private final static String SPECIFY_THE_CACHED_DIRECTORY = "1. Указать кэшируемую дирректорию;";
+    private final static String ONE = "1. ";
 
-    private final static String UPLOAD_FILE_CONTENTS_TO_CACHE = "2. Загрузить содержимое файла в кэш;";
+    private final static String TWO = "2. ";
 
-    private final static String GET_FILE_CONTENTS_TO_CACHE = "3. Получить содержимое файла из кэша;";
+    private final static String THREE = "3. ";
 
-    private final static String EXIT = "4. Выход.";
+    private final static String FOUR = "4. ";
+
+    private final static String SPECIFY_THE_CACHED_DIRECTORY = "Указать кэшируемую дирректорию;";
+
+    private final static String UPLOAD_FILE_CONTENTS_TO_CACHE = "Загрузить содержимое файла в кэш;";
+
+    private final static String GET_FILE_CONTENTS_TO_CACHE = "Получить содержимое файла из кэша;";
+
+    private final static String EXIT = "Выход.";
 
     private static Scanner scanner = new Scanner(System.in);
 
@@ -65,8 +73,14 @@ public class Emulator {
                 GET_FILE_CONTENTS_TO_CACHE,
                 EXIT
         );
+        List<String> menuNumbers = List.of(
+                ONE,
+                TWO,
+                THREE,
+                FOUR
+        );
         for (int i = 0; i < menu.size(); i++) {
-            System.out.println(menu.get(i));
+            System.out.println(menuNumbers.get(i) + menu.get(i));
         }
     }
 }
