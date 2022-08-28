@@ -8,13 +8,13 @@ import java.util.Scanner;
 
 public class Emulator {
 
-    private final static String SPECIFY_THE_CACHED_DIRECTORY = "Указать кэшируемую дирректорию";
+    private final static String SPECIFY_THE_CACHED_DIRECTORY = "1. Указать кэшируемую дирректорию;";
 
-    private final static String UPLOAD_FILE_CONTENTS_TO_CACHE = "Загрузить содержимое файла в кэш";
+    private final static String UPLOAD_FILE_CONTENTS_TO_CACHE = "2. Загрузить содержимое файла в кэш;";
 
-    private final static String GET_FILE_CONTENTS_TO_CACHE = "Получить содержимое файла из кэша";
+    private final static String GET_FILE_CONTENTS_TO_CACHE = "3. Получить содержимое файла из кэша;";
 
-    private final static String EXIT = "Выход";
+    private final static String EXIT = "4. Выход.";
 
     private static Scanner scanner = new Scanner(System.in);
 
@@ -25,21 +25,21 @@ public class Emulator {
         while (cycle) {
             menu();
             int userChoice = Integer.parseInt(scanner.next());
-            if (userChoice == 0) {
+            if (userChoice == 1) {
                 System.out.printf(
                         "Укажите относительный путь в формате: %s%n",
                         "DIR/"
                 );
                 String path = scanner.next();
                 dirFileCache = new DirFileCache(path);
-            } else if (userChoice == 1) {
+            } else if (userChoice == 2) {
                 System.out.printf(
                         "Укажите имя файла в формате: %s%n",
                         "FILE_NAME.EXTENSION"
                 );
                 String fileName = scanner.next();
                 dirFileCache.put(fileName, dirFileCache.get(fileName));
-            } else if (userChoice == 2) {
+            } else if (userChoice == 3) {
                 System.out.printf(
                         "Укажите имя файла в формате: %s%n",
                         "FILE_NAME.EXTENSION"
@@ -52,7 +52,7 @@ public class Emulator {
                     dirFileCache.put(key, dirFileCache.get(key));
                     System.out.println("Файл отсутствует. Файл загружен в кэш.");
                 }
-            } else if (userChoice == 3) {
+            } else if (userChoice == 4) {
                 cycle = false;
             }
         }
@@ -66,7 +66,7 @@ public class Emulator {
                 EXIT
         );
         for (int i = 0; i < menu.size(); i++) {
-            System.out.println(i + ". " + menu.get(i));
+            System.out.println(menu.get(i));
         }
     }
 }
