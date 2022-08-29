@@ -8,13 +8,13 @@ import java.util.Scanner;
 
 public class Emulator {
 
-    private final static String ONE = "1. ";
+    private final static int SPECIFYING_DIRECTORY_PATH = 1;
 
-    private final static String TWO = "2. ";
+    private final static int LOAD_FILE = 2;
 
-    private final static String THREE = "3. ";
+    private final static int GET_DATA = 3;
 
-    private final static String FOUR = "4. ";
+    private final static int EXIT_MENU = 4;
 
     private final static String SPECIFY_THE_CACHED_DIRECTORY = "Указать кэшируемую дирректорию;";
 
@@ -33,21 +33,21 @@ public class Emulator {
         while (cycle) {
             menu();
             int userChoice = Integer.parseInt(scanner.next());
-            if (userChoice == 1) {
+            if (userChoice == SPECIFYING_DIRECTORY_PATH) {
                 System.out.printf(
                         "Укажите относительный путь в формате: %s%n",
                         "DIR/"
                 );
                 String path = scanner.next();
                 dirFileCache = new DirFileCache(path);
-            } else if (userChoice == 2) {
+            } else if (userChoice == LOAD_FILE) {
                 System.out.printf(
                         "Укажите имя файла в формате: %s%n",
                         "FILE_NAME.EXTENSION"
                 );
                 String fileName = scanner.next();
                 dirFileCache.put(fileName, dirFileCache.get(fileName));
-            } else if (userChoice == 3) {
+            } else if (userChoice == GET_DATA) {
                 System.out.printf(
                         "Укажите имя файла в формате: %s%n",
                         "FILE_NAME.EXTENSION"
@@ -60,7 +60,7 @@ public class Emulator {
                     dirFileCache.put(key, dirFileCache.get(key));
                     System.out.println("Файл отсутствует. Файл загружен в кэш.");
                 }
-            } else if (userChoice == 4) {
+            } else if (userChoice == EXIT_MENU) {
                 cycle = false;
             }
         }
@@ -73,14 +73,15 @@ public class Emulator {
                 GET_FILE_CONTENTS_TO_CACHE,
                 EXIT
         );
-        List<String> menuNumbers = List.of(
-                ONE,
-                TWO,
-                THREE,
-                FOUR
+        List<Integer> menuNumbers = List.of(
+                SPECIFYING_DIRECTORY_PATH,
+                LOAD_FILE,
+                GET_DATA,
+                EXIT_MENU
         );
         for (int i = 0; i < menu.size(); i++) {
-            System.out.println(menuNumbers.get(i) + menu.get(i));
+            System.out.println(menuNumbers.get(i)
+                    + ". " + menu.get(i));
         }
     }
 }
