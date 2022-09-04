@@ -3,6 +3,7 @@ package ru.job4j.kiss;
 import org.junit.Test;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static junit.framework.Assert.assertNull;
 import static org.hamcrest.core.Is.*;
 
 import java.util.Comparator;
@@ -10,42 +11,6 @@ import java.util.List;
 import java.util.Objects;
 
 public class MaxMinTest {
-
-    public class Person {
-        private int age;
-
-        public Person(int age) {
-            this.age = age;
-        }
-
-        public int getAge() {
-            return this.age;
-        }
-
-        @Override
-        public String toString() {
-            return "Person{"
-                    + "age=" + age
-                    + '}';
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) {
-                return true;
-            }
-            if (o == null || getClass() != o.getClass()) {
-                return false;
-            }
-            Person person = (Person) o;
-            return age == person.age;
-        }
-
-        @Override
-        public int hashCode() {
-            return Objects.hash(age);
-        }
-    }
 
     @Test
     public void max() {
@@ -77,4 +42,11 @@ public class MaxMinTest {
         assertThat(expected, is(maxMin.min(list, comparator)));
     }
 
+    @Test
+    public void whenValueIsEmpty() {
+        List<Person> list = List.of();
+        Comparator<Person> comparator = (o1, o2) -> o1.getAge() - o2.getAge();
+        MaxMin maxMin = new MaxMin();
+        assertNull(maxMin.min(list, comparator));
+    }
 }

@@ -15,13 +15,15 @@ public class MaxMin {
 
     public <T> T result(List<T> value, Comparator<T> comparator, Predicate<Integer> predicate) {
         T rsl = null;
-        for (T v : value) {
-            if (rsl == null) {
-                rsl = v;
-            }
-            int compare = comparator.compare(rsl, v);
-            if (predicate.test(compare)) {
-                rsl = v;
+        if (!value.isEmpty()) {
+            for (T v : value) {
+                if (rsl == null) {
+                    rsl = v;
+                }
+                int compare = comparator.compare(rsl, v);
+                if (predicate.test(compare)) {
+                    rsl = v;
+                }
             }
         }
         return rsl;
