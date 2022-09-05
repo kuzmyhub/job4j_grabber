@@ -2,6 +2,7 @@ package ru.job4j.design.srp;
 
 import org.junit.jupiter.api.Test;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import static org.assertj.core.api.Assertions.*;
@@ -99,5 +100,69 @@ class ReportEngineTest {
                 .append(worker1.getSalary()).append(";")
                 .append(System.lineSeparator());
         assertThat(hr.generate(em -> true)).isEqualTo(expect.toString());
+    }
+
+    @Test
+    public void whenJSONGenerated() {
+        MemStore store = new MemStore();
+        Employee worker = new Employee("Ivan",
+                Calendar.getInstance(), Calendar.getInstance(),
+                100);
+        store.add(worker);
+        Report json = new ReportJSON(store);
+        String expected = "[{\"name\":\"Ivan\",\"hired\":{"
+                + "\"year\":"
+                + worker.getHired().get(Calendar.YEAR)
+                + ",\"month\":"
+                + worker.getHired().get(Calendar.MONTH)
+                + ",\"dayOfMonth\":"
+                + worker.getHired().get(Calendar.DAY_OF_MONTH)
+                + ",\"hourOfDay\":"
+                + worker.getHired().get(Calendar.HOUR_OF_DAY)
+                + ",\"minute\":"
+                + worker.getHired().get(Calendar.MINUTE)
+                + ",\"second\":"
+                + worker.getHired().get(Calendar.SECOND)
+                + "},\"fired\":{\"year\":"
+                + worker.getFired().get(Calendar.YEAR)
+                + ",\"month\":"
+                + worker.getHired().get(Calendar.MONTH)
+                + ",\"dayOfMonth\":"
+                + worker.getHired().get(Calendar.DAY_OF_MONTH)
+                + ",\"hourOfDay\":"
+                + worker.getHired().get(Calendar.HOUR_OF_DAY)
+                + ",\"minute\":"
+                + worker.getHired().get(Calendar.MINUTE)
+                + ",\"second\":"
+                + worker.getHired().get(Calendar.SECOND)
+                + "},\"salary\":100.0}]";
+        assertThat(json.generate(em -> true)).isEqualTo(expected);
+    }
+
+    @Test
+    public void whenXMLGenerated() {
+        MemStore store = new MemStore();
+        SimpleDateFormat dateFormat = new SimpleDateFormat(
+                "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"
+        );
+        Employee worker = new Employee("Ivan",
+                Calendar.getInstance(), Calendar.getInstance(),
+                100);
+        store.add(worker);
+        Report xml = new ReportXML(store);
+        String expected = "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\n"
+                + "<employees>\n"
+                + "    <employee>\n"
+                + "        <fired>"
+                + dateFormat.format(worker.getFired().getTime())
+                + "</fired>\n"
+                + "        <hired>"
+                + dateFormat.format(worker.getFired().getTime())
+                + "</hired>\n"
+                + "        <name>Ivan</name>\n"
+                + "        <salary>100.0</salary>\n"
+                + "    </employee>\n"
+                + "</employees>\n";
+        assertThat(xml.generate(em -> true)).isEqualTo(expected);
     }
 }
