@@ -15,9 +15,9 @@ public class ReportXML implements Report {
 
     private Store store;
 
-    JAXBContext context;
+    private JAXBContext context;
 
-    Marshaller marshaller;
+    private Marshaller marshaller;
 
     public ReportXML(Store store) throws JAXBException {
         this.store = store;
