@@ -2,6 +2,7 @@ package ru.job4j.design.srp;
 
 import org.junit.jupiter.api.Test;
 
+import javax.xml.bind.JAXBException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
@@ -140,7 +141,7 @@ class ReportEngineTest {
     }
 
     @Test
-    public void whenXMLGenerated() {
+    public void whenXMLGenerated() throws JAXBException {
         MemStore store = new MemStore();
         SimpleDateFormat dateFormat = new SimpleDateFormat(
                 "yyyy-MM-dd'T'HH:mm:ss.SSSXXX"

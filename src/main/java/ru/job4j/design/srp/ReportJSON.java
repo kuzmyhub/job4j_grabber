@@ -13,14 +13,16 @@ public class ReportJSON implements Report {
 
     private Store store;
 
+    private Gson gson;
+
     public ReportJSON(Store store) {
         this.store = store;
+        this.gson = new GsonBuilder().create();
     }
 
     @Override
     public String generate(Predicate<Employee> filter) {
         List<Employee> employees = store.findBy(filter);
-        Gson gson = new GsonBuilder().create();
         return gson.toJson(employees);
     }
 }

@@ -15,8 +15,14 @@ public class ReportXML implements Report {
 
     private Store store;
 
-    public ReportXML(Store store) {
+    JAXBContext context;
+
+    Marshaller marshaller;
+
+    public ReportXML(Store store) throws JAXBException {
         this.store = store;
+        context = JAXBContext.newInstance(Employees.class);
+        marshaller = context.createMarshaller();
     }
 
     @Override
@@ -24,8 +30,6 @@ public class ReportXML implements Report {
         List<Employee> employees = store.findBy(filter);
         String xml = "";
         try {
-            JAXBContext context = JAXBContext.newInstance(Employees.class);
-            Marshaller marshaller = context.createMarshaller();
             marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             try (StringWriter writer = new StringWriter()) {
                 marshaller.marshal(new Employees(employees), writer);
