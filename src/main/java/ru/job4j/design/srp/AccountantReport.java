@@ -13,7 +13,7 @@ public class AccountantReport implements Report {
 
     public static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("dd:MM:yyyy HH:mm");
 
-    private final int dollarRate = 60;
+    public static final int DOLLAR_RATE = 60;
 
     private Store store;
 
@@ -30,7 +30,7 @@ public class AccountantReport implements Report {
             text.append(employee.getName()).append(";")
                     .append(DATE_FORMAT.format(employee.getHired().getTime())).append(";")
                     .append(DATE_FORMAT.format(employee.getFired().getTime())).append(";")
-                    .append(employee.getSalary() * dollarRate).append(";")
+                    .append(employee.getSalary() * DOLLAR_RATE).append(";")
                     .append(System.lineSeparator());
         }
         return text.toString();

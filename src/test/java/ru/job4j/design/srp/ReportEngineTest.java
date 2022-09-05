@@ -60,14 +60,13 @@ class ReportEngineTest {
                 100);
         store.add(worker);
         Report accountant = new AccountantReport(store);
-        int dollarRate = 60;
         StringBuilder expect = new StringBuilder()
                 .append("Name; Hired; Fired; Salary;")
                 .append(System.lineSeparator())
                 .append(worker.getName()).append(";")
                 .append(DATE_FORMAT.format(worker.getHired().getTime())).append(";")
                 .append(DATE_FORMAT.format(worker.getFired().getTime())).append(";")
-                .append(worker.getSalary() * dollarRate).append(";")
+                .append(worker.getSalary() * AccountantReport.DOLLAR_RATE).append(";")
                 .append(System.lineSeparator());
         assertThat(accountant.generate(em -> true)).isEqualTo(expect.toString());
     }
