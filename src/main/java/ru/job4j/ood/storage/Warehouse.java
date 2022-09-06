@@ -5,14 +5,14 @@ import java.util.List;
 
 public class Warehouse implements Store {
 
-    private List<Food> warehouse = new ArrayList<>();
+    private List<Food> warehouseList = new ArrayList<>();
 
     @Override
     public void sort(Food food) {
-        warehouse.add(food);
+        warehouseList.add(food);
     }
 
-    public List<Food> getWarehouse() {
-        return warehouse;
+    public List<Food> getWarehouseList() {
+        return warehouseList;
     }
 }
