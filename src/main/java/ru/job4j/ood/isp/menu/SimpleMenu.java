@@ -12,6 +12,7 @@ public class SimpleMenu implements Menu {
         boolean rsl = false;
         if (parentName == null) {
             rootElements.add(new SimpleMenuItem(childName, actionDelegate));
+            rsl = true;
         } else {
             Optional<ItemInfo> item = findItem(parentName);
             if (item.isPresent()) {

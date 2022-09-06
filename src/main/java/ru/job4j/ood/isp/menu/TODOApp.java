@@ -34,8 +34,8 @@ public class TODOApp {
         MenuPrinter printer = new Printer();
         Scanner scanner = new Scanner(System.in);
         boolean selector = true;
-        menu();
         while (selector) {
+            menu();
             int choice = Integer.parseInt(scanner.nextLine());
             if (choice == ADD_ROOT) {
                 System.out.println("Введите корень:");

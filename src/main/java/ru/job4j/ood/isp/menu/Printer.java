@@ -19,6 +19,7 @@ public class Printer implements MenuPrinter {
                         .append(System.lineSeparator());
             }
         }
+        System.out.println(getString());
     }
 
     @Override
