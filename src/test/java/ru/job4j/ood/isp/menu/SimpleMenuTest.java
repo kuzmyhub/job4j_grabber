@@ -69,6 +69,4 @@ class SimpleMenuTest {
         printer.print(menu);
         assertThat(printer.getString()).isEqualTo(expected);
     }
-
-
 }
