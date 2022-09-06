@@ -4,63 +4,28 @@ import java.util.*;
 
 public class ControlQuality {
 
-    public static final float EXPIRATION_DATA_TRASH = 25F;
+    private List<Store> stores;
 
-    public static final float EXPIRATION_DATA_WAREHOUSE =  75F;
-
-    public static final float EXPIRATION_DATA = 100F;
-
-    private Trash trash;
-
-    private Shop shop;
-
-    private Warehouse warehouse;
-
-    public ControlQuality() {
-        this.trash = new Trash();
-        this.shop = new Shop();
-        this.warehouse = new Warehouse();
+    public ControlQuality(List<Store> stores) {
+        this.stores = stores;
     }
 
-    public void sort(Food food, Store store) {
-        store.sort(food);
+    public boolean sort(Food food, Store store) {
+        return store.sort(food);
     }
 
-    public float freshness(Food food) {
-        Date now = Calendar.getInstance().getTime();
-        Date beginning = food.getCreateDate().getTime();
-        Date end = food.getExpiryDate().getTime();
-        float condition = (
-                end.getTime() - now.getTime()
-        ) * EXPIRATION_DATA / (
-                end.getTime() - beginning.getTime()
-        );
-        return condition;
-    }
-
-    public void conveyor(List<Food> food) {
-        for (Food f : food) {
-            float condition = freshness(f);
-            if (condition > EXPIRATION_DATA_WAREHOUSE) {
-                sort(f, warehouse);
-            } else if (condition <= EXPIRATION_DATA_WAREHOUSE
-                    && condition >= EXPIRATION_DATA_TRASH) {
-                sort(f, shop);
-            } else if (condition < EXPIRATION_DATA_TRASH) {
-                sort(f, trash);
+    public void doDistribute(List<Food> food) {
+        for (Store s : stores) {
+            for (Food f : food) {
+                boolean isCondition = s.accept(f);
+                if (isCondition) {
+                    sort(f, s);
+                }
             }
         }
     }
 
-    public Trash getTrash() {
-        return trash;
-    }
-
-    public Shop getShop() {
-        return shop;
-    }
-
-    public Warehouse getWarehouse() {
-        return warehouse;
+    public List<Store> getStores() {
+        return List.copyOf(stores);
     }
 }

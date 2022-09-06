@@ -5,14 +5,36 @@ import java.util.List;
 
 public class Warehouse implements Store {
 
+    public static final float EXPIRATION_DATA_WAREHOUSE =  75F;
+
     private List<Food> warehouseList = new ArrayList<>();
 
     @Override
-    public void sort(Food food) {
-        warehouseList.add(food);
+    public boolean sort(Food food) {
+        boolean rsl = false;
+        if (accept(food)) {
+            rsl = warehouseList.add(food);
+        }
+        return rsl;
     }
 
-    public List<Food> getWarehouseList() {
-        return warehouseList;
+    @Override
+    public boolean accept(Food food) {
+        boolean rsl = false;
+        float condition = checkFreshness(food);
+        if (condition > EXPIRATION_DATA_WAREHOUSE) {
+            rsl = true;
+        }
+        return rsl;
+    }
+
+    @Override
+    public float checkFreshness(Food food) {
+        return Store.super.checkFreshness(food);
+    }
+
+    @Override
+    public List<Food> getFoodList() {
+        return List.copyOf(warehouseList);
     }
 }

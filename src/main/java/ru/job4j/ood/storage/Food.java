@@ -5,15 +5,15 @@ import java.util.Objects;
 
 public class Food {
 
-    String name;
+    private String name;
 
-    Calendar expiryDate;
+    private Calendar expiryDate;
 
-    Calendar createDate;
+    private Calendar createDate;
 
-    int price;
+    private int price;
 
-    int discount;
+    private int discount;
 
     public Food(String name, Calendar expiryDate,
                 Calendar createDate, int price, int discount) {
