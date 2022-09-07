@@ -13,7 +13,6 @@ class ShoppingCenterParkingTest {
         Car autoOne = new Auto("E253TT32");
         Car autoTwo = new Auto("B253MM24");
         Car truckOne = new Truck(2, "Y467AP98");
-
         assertTrue(scp.park(autoOne));
         assertTrue(scp.park(autoTwo));
         assertTrue(scp.park(truckOne));
@@ -26,37 +25,5 @@ class ShoppingCenterParkingTest {
         Car truckTwo = new Truck(2, "P467AC65");
         assertTrue(scp.park(truckOne));
         assertTrue(scp.park(truckTwo));
-    }
-
-    @Test
-    public void when2AutoAndOneAutoPlaceThenFalse() {
-        ShoppingCenterParking scp = new ShoppingCenterParking(1, 0);
-        Car autoOne = new Auto("E253TT32");
-        Car autoTwo = new Auto("B253MM24");
-        assertTrue(scp.park(autoOne));
-        assertFalse(scp.park(autoTwo));
-    }
-
-    @Test
-    public void when2TruckAndOneTruckPlaceThenFalse() {
-        ShoppingCenterParking scp = new ShoppingCenterParking(0, 1);
-        Car truckOne = new Truck(2, "Y467AP98");
-        Car truckTwo = new Truck(2, "P467AC65");
-        assertTrue(scp.park(truckOne));
-        assertFalse(scp.park(truckTwo));
-    }
-
-    @Test
-    public void when1AutoAndOneTruckPlaceThenFalse() {
-        ShoppingCenterParking scp = new ShoppingCenterParking(0, 1);
-        Car autoOne = new Auto("E253TT32");
-        assertFalse(scp.park(autoOne));
-    }
-
-    @Test
-    public void when1TruckAndOneAutoPlaceThenFalse() {
-        ShoppingCenterParking scp = new ShoppingCenterParking(1, 0);
-        Car truckOne = new Truck(2, "Y467AP98");
-        assertFalse(scp.park(truckOne));
     }
 }
