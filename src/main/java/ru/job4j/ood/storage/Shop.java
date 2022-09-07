@@ -38,7 +38,7 @@ public class Shop implements Store {
         boolean rsl = false;
         float condition = checkFreshness(food);
         if (condition <= EXPIRATION_DATA_WAREHOUSE
-                && condition >= EXPIRATION_DATA_TRASH) {
+                && condition > EXPIRATION_DATA_TRASH) {
             rsl = true;
         }
         return rsl;

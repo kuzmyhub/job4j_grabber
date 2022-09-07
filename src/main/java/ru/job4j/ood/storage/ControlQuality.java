@@ -19,7 +19,7 @@ public class ControlQuality {
         doDistribute(food);
     }
 
-    public boolean sort(Food food, Store store) {
+    private boolean sort(Food food, Store store) {
         return store.sort(food);
     }
 

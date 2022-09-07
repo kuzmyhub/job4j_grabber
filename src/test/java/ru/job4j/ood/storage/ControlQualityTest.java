@@ -59,7 +59,7 @@ class ControlQualityTest {
                createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
+        assertThat(trash.getFoodList()).containsAll(List.of(cheese));
     }
 
     @Test
@@ -111,7 +111,7 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
+        assertThat(shop.getFoodList()).containsAll(List.of(chicken));
     }
 
     @Test
@@ -163,7 +163,7 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
+        assertThat(warehouse.getFoodList()).containsAll(List.of(juice));
     }
 
     @Test
@@ -215,9 +215,9 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
-        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
-        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
+        assertThat(trash.getFoodList()).containsAll(List.of(cheese));
+        assertThat(shop.getFoodList()).containsAll(List.of(chicken));
+        assertThat(warehouse.getFoodList()).containsAll(List.of(juice));
 
     }
 
@@ -271,8 +271,8 @@ class ControlQualityTest {
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
         controlQuality.resort();
-        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
-        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
-        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
+        assertThat(trash.getFoodList()).containsAll(List.of(cheese));
+        assertThat(shop.getFoodList()).containsAll(List.of(chicken));
+        assertThat(warehouse.getFoodList()).containsAll(List.of(juice));
     }
 }
