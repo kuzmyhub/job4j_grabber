@@ -2,7 +2,7 @@ package ru.job4j.ood.parking;
 
 public class Auto implements Car {
 
-    private static final int SIZE = 1;
+    public static final int SIZE = 1;
 
     private String number;
 
