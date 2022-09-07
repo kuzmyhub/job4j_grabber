@@ -10,6 +10,12 @@ public class Warehouse implements Store {
     private List<Food> warehouseList = new ArrayList<>();
 
     @Override
+    public boolean clear() {
+        warehouseList.clear();
+        return warehouseList.isEmpty();
+    }
+
+    @Override
     public boolean sort(Food food) {
         boolean rsl = false;
         if (accept(food)) {

@@ -14,6 +14,12 @@ public class Shop implements Store {
     private List<Food> shopList = new ArrayList<>();
 
     @Override
+    public boolean clear() {
+        shopList.clear();
+        return shopList.isEmpty();
+    }
+
+    @Override
     public boolean sort(Food food) {
         shopList.add(food);
         return true;

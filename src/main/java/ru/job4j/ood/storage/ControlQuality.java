@@ -10,6 +10,15 @@ public class ControlQuality {
         this.stores = stores;
     }
 
+    public void resort() {
+        List<Food> food = new ArrayList<>();
+        for (Store s : stores) {
+            food.addAll(s.getFoodList());
+            s.clear();
+        }
+        doDistribute(food);
+    }
+
     public boolean sort(Food food, Store store) {
         return store.sort(food);
     }

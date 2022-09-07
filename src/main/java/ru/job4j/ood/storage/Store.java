@@ -8,6 +8,8 @@ public interface Store {
 
     float EXPIRATION_DATA = 100F;
 
+    boolean clear();
+
     boolean sort(Food food);
 
     boolean accept(Food food);
