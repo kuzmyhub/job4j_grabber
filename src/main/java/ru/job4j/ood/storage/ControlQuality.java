@@ -33,8 +33,4 @@ public class ControlQuality {
             }
         }
     }
-
-    public List<Store> getStores() {
-        return List.copyOf(stores);
-    }
 }

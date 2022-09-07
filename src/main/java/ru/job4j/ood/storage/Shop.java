@@ -21,8 +21,16 @@ public class Shop implements Store {
 
     @Override
     public boolean sort(Food food) {
-        shopList.add(food);
-        return true;
+        boolean rsl = false;
+        if (accept(food)) {
+            float condition = checkFreshness(food);
+            if (condition < EXPIRATION_DATA_DISCOUNT
+                    && condition > EXPIRATION_DATA_TRASH) {
+                food.setDiscount(20);
+            }
+            rsl = shopList.add(food);
+        }
+        return rsl;
     }
 
     @Override
@@ -30,19 +38,10 @@ public class Shop implements Store {
         boolean rsl = false;
         float condition = checkFreshness(food);
         if (condition <= EXPIRATION_DATA_WAREHOUSE
-                && condition >= EXPIRATION_DATA_DISCOUNT) {
+                && condition >= EXPIRATION_DATA_TRASH) {
             rsl = true;
-        } else if (condition < EXPIRATION_DATA_DISCOUNT
-                && condition > EXPIRATION_DATA_TRASH) {
-            rsl = true;
-            food.setDiscount(20);
         }
         return rsl;
-    }
-
-    @Override
-    public float checkFreshness(Food food) {
-        return Store.super.checkFreshness(food);
     }
 
     @Override

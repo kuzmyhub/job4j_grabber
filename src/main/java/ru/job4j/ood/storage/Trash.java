@@ -17,8 +17,11 @@ public class Trash implements Store {
 
     @Override
     public boolean sort(Food food) {
-        trashList.add(food);
-        return true;
+        boolean rsl = false;
+        if (accept(food)) {
+            rsl = trashList.add(food);
+        }
+        return rsl;
     }
 
     @Override
@@ -29,11 +32,6 @@ public class Trash implements Store {
             rsl = true;
         }
         return rsl;
-    }
-
-    @Override
-    public float checkFreshness(Food food) {
-        return Store.super.checkFreshness(food);
     }
 
     @Override

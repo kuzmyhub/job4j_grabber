@@ -12,10 +12,13 @@ class ControlQualityTest {
 
     @Test
     public void whenFoodIsRottenThenTrash() {
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
         List<Store> stores = List.of(
-                new Trash(),
-                new Shop(),
-                new Warehouse()
+                trash,
+                shop,
+                warehouse
         );
         ControlQuality controlQuality = new ControlQuality(stores);
         Calendar expiryDateCheese = Calendar.getInstance();
@@ -56,15 +59,18 @@ class ControlQualityTest {
                createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(controlQuality.getStores().get(0).getFoodList()).isEqualTo(List.of(cheese));
+        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
     }
 
     @Test
     public void whenFoodIsNotFreshAndNotRottenThenShop() {
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
         List<Store> stores = List.of(
-                new Trash(),
-                new Shop(),
-                new Warehouse()
+                trash,
+                shop,
+                warehouse
         );
         ControlQuality controlQuality = new ControlQuality(stores);
         Calendar expiryDateCheese = Calendar.getInstance();
@@ -105,15 +111,18 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(controlQuality.getStores().get(1).getFoodList()).isEqualTo(List.of(chicken));
+        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
     }
 
     @Test
     public void whenFoodIsFreshThenWarehouse() {
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
         List<Store> stores = List.of(
-                new Trash(),
-                new Shop(),
-                new Warehouse()
+                trash,
+                shop,
+                warehouse
         );
         ControlQuality controlQuality = new ControlQuality(stores);
         Calendar expiryDateCheese = Calendar.getInstance();
@@ -154,15 +163,18 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(controlQuality.getStores().get(2).getFoodList()).isEqualTo(List.of(juice));
+        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
     }
 
     @Test
     public void whenAllFoodIsSorted() {
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
         List<Store> stores = List.of(
-                new Trash(),
-                new Shop(),
-                new Warehouse()
+                trash,
+                shop,
+                warehouse
         );
         ControlQuality controlQuality = new ControlQuality(stores);
         Calendar expiryDateCheese = Calendar.getInstance();
@@ -203,18 +215,21 @@ class ControlQualityTest {
                 createDateJuice, 150, 0);
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
-        assertThat(controlQuality.getStores().get(0).getFoodList()).isEqualTo(List.of(cheese));
-        assertThat(controlQuality.getStores().get(1).getFoodList()).isEqualTo(List.of(chicken));
-        assertThat(controlQuality.getStores().get(2).getFoodList()).isEqualTo(List.of(juice));
+        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
+        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
+        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
 
     }
 
     @Test
     public void whenClearAndResort() {
+        Store trash = new Trash();
+        Store shop = new Shop();
+        Store warehouse = new Warehouse();
         List<Store> stores = List.of(
-                new Trash(),
-                new Shop(),
-                new Warehouse()
+                trash,
+                shop,
+                warehouse
         );
         ControlQuality controlQuality = new ControlQuality(stores);
         Calendar expiryDateCheese = Calendar.getInstance();
@@ -256,8 +271,8 @@ class ControlQualityTest {
         List<Food> food = List.of(cheese, chicken, juice);
         controlQuality.doDistribute(food);
         controlQuality.resort();
-        assertThat(controlQuality.getStores().get(0).getFoodList()).isEqualTo(List.of(cheese));
-        assertThat(controlQuality.getStores().get(1).getFoodList()).isEqualTo(List.of(chicken));
-        assertThat(controlQuality.getStores().get(2).getFoodList()).isEqualTo(List.of(juice));
+        assertThat(trash.getFoodList()).isEqualTo(List.of(cheese));
+        assertThat(shop.getFoodList()).isEqualTo(List.of(chicken));
+        assertThat(warehouse.getFoodList()).isEqualTo(List.of(juice));
     }
 }

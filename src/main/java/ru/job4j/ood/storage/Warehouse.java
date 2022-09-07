@@ -35,11 +35,6 @@ public class Warehouse implements Store {
     }
 
     @Override
-    public float checkFreshness(Food food) {
-        return Store.super.checkFreshness(food);
-    }
-
-    @Override
     public List<Food> getFoodList() {
         return List.copyOf(warehouseList);
     }
