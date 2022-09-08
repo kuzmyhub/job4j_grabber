@@ -27,21 +27,25 @@ public class ShoppingCenterParking implements ParkingSpace {
     @Override
     public boolean park(Car car) {
         boolean rsl = false;
-        if (car.getSize() == Auto.SIZE) {
-            if (remainingAutoPlaces >= Auto.SIZE) {
-                autos.add(car);
-                remainingAutoPlaces -= Auto.SIZE;
-                rsl = true;
-            }
-        } else if (car.getSize() > Auto.SIZE) {
-            if (remainingTruckPlaces >= Auto.SIZE) {
-                trucks.add(car);
-                remainingTruckPlaces -= Auto.SIZE;
-                rsl = true;
-            } else if (remainingAutoPlaces >= car.getSize()) {
-                autos.add(car);
-                remainingAutoPlaces -= car.getSize();
-                rsl = true;
+        if ((car.getSize() == Auto.SIZE && !autos.contains(car))
+                || (car.getSize() > Auto.SIZE && !autos.contains(car)
+                && !trucks.contains(car))) {
+            if (car.getSize() == Auto.SIZE) {
+                if (remainingAutoPlaces >= Auto.SIZE) {
+                    autos.add(car);
+                    remainingAutoPlaces -= Auto.SIZE;
+                    rsl = true;
+                }
+            } else if (car.getSize() > Auto.SIZE) {
+                if (remainingTruckPlaces >= Auto.SIZE) {
+                    trucks.add(car);
+                    remainingTruckPlaces -= Auto.SIZE;
+                    rsl = true;
+                } else if (remainingAutoPlaces >= car.getSize()) {
+                    autos.add(car);
+                    remainingAutoPlaces -= car.getSize();
+                    rsl = true;
+                }
             }
         }
         return rsl;
